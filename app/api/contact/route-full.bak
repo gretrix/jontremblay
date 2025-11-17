@@ -1,0 +1,74 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+import { prisma } from '@/lib/db'
+import { sendAutoResponseEmail, sendAdminNotificationEmail } from '@/lib/email'
+
+const contactSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  company: z.string().optional(),
+  inquiryPurpose: z.enum(['business', 'partnership', 'speaking', 'church-community', 'personal', 'other']),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+})
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    
+    // Validate the request body
+    const validatedData = contactSchema.parse(body)
+
+    // Save to database
+    const submission = await prisma.contactSubmission.create({
+      data: {
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || null,
+        company: validatedData.company || null,
+        inquiryPurpose: validatedData.inquiryPurpose,
+        message: validatedData.message,
+      },
+    })
+
+    // Send auto-response email to the submitter
+    try {
+      await sendAutoResponseEmail(validatedData)
+    } catch (emailError) {
+      console.error('Failed to send auto-response email:', emailError)
+      // Continue even if email fails - we still saved to DB
+    }
+
+    // Send notification email to admin
+    try {
+      await sendAdminNotificationEmail(validatedData)
+    } catch (emailError) {
+      console.error('Failed to send admin notification email:', emailError)
+      // Continue even if email fails - we still saved to DB
+    }
+
+    return NextResponse.json(
+      { 
+        success: true, 
+        message: 'Your message has been received. Check your email for confirmation.',
+        id: submission.id 
+      },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error('Contact form error:', error)
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid form data', details: error.errors },
+        { status: 400 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to process your request. Please try again or contact me directly.' },
+      { status: 500 }
+    )
+  }
+}
+
