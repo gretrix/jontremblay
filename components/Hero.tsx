@@ -20,11 +20,12 @@ export default function Hero() {
             </div>
           </div>
           <div className="fade-in flex justify-center">
-            <div className="w-80 h-80 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border-4 border-white/20">
-              <i className="fas fa-user text-9xl text-white/40"></i>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-white/60 text-sm mt-60">Portrait Placeholder</p>
-              </div>
+            <div className="w-80 h-80 rounded-2xl overflow-hidden border-4 border-white/20 shadow-2xl">
+              <img 
+                src="/images/JT_2.jpg" 
+                alt="Jonathan Tremblay" 
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
