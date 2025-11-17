@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { prisma } from '@/lib/db'
+import { sendAutoResponseEmail, sendAdminNotificationEmail } from '@/lib/email'
 
 const contactSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -17,7 +19,7 @@ export async function POST(request: NextRequest) {
     // Validate the request body
     const validatedData = contactSchema.parse(body)
 
-    // FOR TESTING: Just log to console
+    // Log to console for monitoring
     console.log('📧 FORM SUBMISSION RECEIVED:')
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('Name:', validatedData.name)
@@ -27,13 +29,46 @@ export async function POST(request: NextRequest) {
     console.log('Purpose:', validatedData.inquiryPurpose)
     console.log('Message:', validatedData.message)
     console.log('Time:', new Date().toLocaleString())
+
+    // Save to database
+    const submission = await prisma.contactSubmission.create({
+      data: {
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || null,
+        company: validatedData.company || null,
+        inquiryPurpose: validatedData.inquiryPurpose,
+        message: validatedData.message,
+      },
+    })
+
+    console.log('✅ Saved to database with ID:', submission.id)
+
+    // Send auto-response email to the submitter
+    try {
+      await sendAutoResponseEmail(validatedData)
+      console.log('✅ Auto-response email sent to:', validatedData.email)
+    } catch (emailError) {
+      console.error('⚠️  Failed to send auto-response email:', emailError)
+      // Continue even if email fails - we still saved to DB
+    }
+
+    // Send notification email to admin
+    try {
+      await sendAdminNotificationEmail(validatedData)
+      console.log('✅ Admin notification email sent to:', process.env.ADMIN_EMAIL)
+    } catch (emailError) {
+      console.error('⚠️  Failed to send admin notification email:', emailError)
+      // Continue even if email fails - we still saved to DB
+    }
+
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('✅ Form submission successful (TEST MODE - not saved to database)')
 
     return NextResponse.json(
       { 
         success: true, 
-        message: 'Test mode: Form received! Check your terminal/console for details.',
+        message: 'Your message has been received. Check your email for confirmation.',
+        id: submission.id 
       },
       { status: 200 }
     )
@@ -48,7 +83,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Failed to process your request.' },
+      { error: 'Failed to process your request. Please try again or contact me directly.' },
       { status: 500 }
     )
   }
