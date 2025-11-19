@@ -16,7 +16,7 @@ export default function Faith() {
         </h2>
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 fade-in">
           <div className="text-center mb-12">
-            <div className="text-purple-600 text-6xl mb-6">
+            <div className="text-blue-900 text-6xl mb-6">
               <i className="fas fa-church"></i>
             </div>
             <h3 className="text-3xl font-bold text-gray-800 mb-6">Active Service at Grace Church</h3>
@@ -28,7 +28,7 @@ export default function Faith() {
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {services.map((service, index) => (
               <div key={index} className="flex items-start space-x-4">
-                <i className="fas fa-check-circle text-purple-600 text-2xl mt-1"></i>
+                <i className="fas fa-check-circle text-blue-900 text-2xl mt-1"></i>
                 <div>
                   <h4 className="font-semibold text-lg text-gray-800">{service}</h4>
                 </div>

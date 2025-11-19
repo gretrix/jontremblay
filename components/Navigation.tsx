@@ -11,11 +11,11 @@ export default function Navigation() {
         <div className="flex justify-between items-center py-4">
           <div className="text-2xl font-bold text-gray-800">Jonathan Tremblay</div>
           <div className="hidden md:flex space-x-8">
-            <a href="#about" className="text-gray-700 hover:text-purple-600 transition">About</a>
-            <a href="#story" className="text-gray-700 hover:text-purple-600 transition">My Story</a>
-            <a href="#ventures" className="text-gray-700 hover:text-purple-600 transition">Ventures</a>
-            <a href="#faith" className="text-gray-700 hover:text-purple-600 transition">Faith</a>
-            <a href="#contact" className="text-gray-700 hover:text-purple-600 transition">Contact</a>
+            <a href="#about" className="text-gray-700 hover:text-blue-900 transition">About</a>
+            <a href="#story" className="text-gray-700 hover:text-blue-900 transition">My Story</a>
+            <a href="#ventures" className="text-gray-700 hover:text-blue-900 transition">Ventures</a>
+            <a href="#faith" className="text-gray-700 hover:text-blue-900 transition">Faith</a>
+            <a href="#contact" className="text-gray-700 hover:text-blue-900 transition">Contact</a>
           </div>
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -31,35 +31,35 @@ export default function Navigation() {
           <a 
             href="#about" 
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-gray-700 hover:text-purple-600 transition"
+            className="block text-gray-700 hover:text-blue-900 transition"
           >
             About
           </a>
           <a 
             href="#story" 
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-gray-700 hover:text-purple-600 transition"
+            className="block text-gray-700 hover:text-blue-900 transition"
           >
             My Story
           </a>
           <a 
             href="#ventures" 
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-gray-700 hover:text-purple-600 transition"
+            className="block text-gray-700 hover:text-blue-900 transition"
           >
             Ventures
           </a>
           <a 
             href="#faith" 
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-gray-700 hover:text-purple-600 transition"
+            className="block text-gray-700 hover:text-blue-900 transition"
           >
             Faith
           </a>
           <a 
             href="#contact" 
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-gray-700 hover:text-purple-600 transition"
+            className="block text-gray-700 hover:text-blue-900 transition"
           >
             Contact
           </a>

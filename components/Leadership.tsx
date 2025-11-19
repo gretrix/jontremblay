@@ -22,7 +22,7 @@ export default function Leadership() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {traits.map((trait, index) => (
             <div key={index} className="fade-in flex items-start space-x-4">
-              <i className={`fas ${trait.icon} text-purple-600 text-3xl mt-1`}></i>
+              <i className={`fas ${trait.icon} text-blue-900 text-3xl mt-1`}></i>
               <div>
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{trait.title}</h3>
                 <p className="text-gray-600">{trait.description}</p>

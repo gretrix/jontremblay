@@ -14,7 +14,7 @@ export default function Hero() {
               <a href="#ventures" className="btn-primary px-8 py-4 rounded-lg text-white font-semibold text-lg text-center">
                 Work With Me
               </a>
-              <a href="#contact" className="btn-secondary bg-white text-purple-700 px-8 py-4 rounded-lg font-semibold text-lg text-center">
+              <a href="#contact" className="btn-secondary bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg text-center">
                 Contact Me
               </a>
             </div>

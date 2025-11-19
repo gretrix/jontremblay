@@ -41,7 +41,7 @@ export default function Ventures() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {ventures.map((venture, index) => (
             <div key={index} className="card-hover bg-white rounded-xl shadow-lg p-8 border border-gray-100 fade-in">
-              <div className="text-purple-600 text-4xl mb-4">
+              <div className="text-blue-900 text-4xl mb-4">
                 <i className={`fas ${venture.icon}`}></i>
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-4">{venture.title}</h3>

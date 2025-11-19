@@ -73,19 +73,19 @@ export default function Contact() {
               <h3 className="text-2xl font-bold text-gray-800 mb-6">Contact Information</h3>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <i className="fas fa-envelope text-purple-600 text-2xl mt-1"></i>
+                  <i className="fas fa-envelope text-blue-900 text-2xl mt-1"></i>
                   <div>
                     <h4 className="font-semibold text-gray-800">Email</h4>
-                    <a href="mailto:jtremblay@jontremblay.com" className="text-purple-600 hover:text-purple-700 transition">
+                    <a href="mailto:jtremblay@jontremblay.com" className="text-blue-900 hover:text-blue-800 transition">
                       jtremblay@jontremblay.com
                     </a>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <i className="fas fa-phone text-purple-600 text-2xl mt-1"></i>
+                  <i className="fas fa-phone text-blue-900 text-2xl mt-1"></i>
                   <div>
                     <h4 className="font-semibold text-gray-800">Phone</h4>
-                    <a href="tel:404-374-9322" className="text-purple-600 hover:text-purple-700 transition">
+                    <a href="tel:404-374-9322" className="text-blue-900 hover:text-blue-800 transition">
                       404-374-9322
                     </a>
                   </div>
@@ -114,7 +114,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   disabled={status === 'loading'}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition disabled:bg-gray-100"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition disabled:bg-gray-100"
                   placeholder="Your name"
                 />
               </div>
@@ -130,7 +130,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   disabled={status === 'loading'}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition disabled:bg-gray-100"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition disabled:bg-gray-100"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -148,7 +148,7 @@ export default function Contact() {
                   value={formData.phone}
                   onChange={handleChange}
                   disabled={status === 'loading'}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition disabled:bg-gray-100"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition disabled:bg-gray-100"
                   placeholder="(555) 123-4567"
                 />
               </div>
@@ -163,7 +163,7 @@ export default function Contact() {
                   value={formData.company}
                   onChange={handleChange}
                   disabled={status === 'loading'}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition disabled:bg-gray-100"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent transition disabled:bg-gray-100"
                   placeholder="Your company"
                 />
               </div>
