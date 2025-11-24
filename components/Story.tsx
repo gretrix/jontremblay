@@ -58,6 +58,33 @@ export default function Story() {
               And if it helps someone else move toward their best life, then it was worth every chapter.
             </p>
           </div>
+          
+          {/* Family Photos Section */}
+          <div className="mt-12 pt-12 border-t border-gray-200">
+            <h3 className="text-3xl font-bold text-gray-800 text-center mb-8">Family & Team</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="rounded-xl overflow-hidden shadow-lg">
+                <img 
+                  src="/images/Linda and Jonathan With Their Beautiful Family.jpg" 
+                  alt="Jonathan with Linda and their three sons - Carter, Leo, and Maverick"
+                  className="w-full h-full object-cover"
+                />
+                <div className="p-4 bg-white">
+                  <p className="text-center text-gray-700 font-semibold">Jonathan with Linda and their three boys</p>
+                </div>
+              </div>
+              <div className="rounded-xl overflow-hidden shadow-lg">
+                <img 
+                  src="/images/Linda and Jonathan Sharing a Fun Moment at Work.jpg" 
+                  alt="Linda and Jonathan together"
+                  className="w-full h-full object-cover"
+                />
+                <div className="p-4 bg-white">
+                  <p className="text-center text-gray-700 font-semibold">Linda and Jonathan - Partners in life and mission</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

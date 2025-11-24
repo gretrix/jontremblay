@@ -3,7 +3,8 @@ export default function Ventures() {
     {
       icon: 'fa-server',
       title: 'Gretrix LLC',
-      description: 'Full-service MSP and custom development partner. Deeply integrated long-term technology leadership, infrastructure, cybersecurity, automations, analytics, and high-impact systems.'
+      description: 'Full-service MSP and custom development partner. Deeply integrated long-term technology leadership, infrastructure, cybersecurity, automations, analytics, and high-impact systems.',
+      image: '/images/Jonathan Representing Gretrix With his truck.jpg'
     },
     {
       icon: 'fa-chart-line',
@@ -40,14 +41,25 @@ export default function Ventures() {
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {ventures.map((venture, index) => (
-            <div key={index} className="card-hover bg-white rounded-xl shadow-lg p-8 border border-gray-100 fade-in">
-              <div className="text-blue-900 text-4xl mb-4">
-                <i className={`fas ${venture.icon}`}></i>
+            <div key={index} className="card-hover bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 fade-in">
+              {venture.image && (
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={venture.image} 
+                    alt={venture.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="p-8">
+                <div className="text-blue-900 text-4xl mb-4">
+                  <i className={`fas ${venture.icon}`}></i>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">{venture.title}</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {venture.description}
+                </p>
               </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">{venture.title}</h3>
-              <p className="text-gray-600 leading-relaxed">
-                {venture.description}
-              </p>
             </div>
           ))}
         </div>

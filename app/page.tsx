@@ -5,6 +5,7 @@ import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Story from '@/components/Story'
+import PhotoGallery from '@/components/PhotoGallery'
 import Ventures from '@/components/Ventures'
 import Faith from '@/components/Faith'
 import Leadership from '@/components/Leadership'
@@ -41,6 +42,7 @@ export default function Home() {
         <Hero />
         <About />
         <Story />
+        <PhotoGallery />
         <Ventures />
         <Faith />
         <Leadership />
