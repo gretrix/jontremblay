@@ -19,7 +19,8 @@ export default function Contact() {
     phone: '',
     company: '',
     inquiryPurpose: '',
-    message: ''
+    message: '',
+    website: '' // Honeypot field - should remain empty
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -68,7 +69,8 @@ export default function Contact() {
         phone: '',
         company: '',
         inquiryPurpose: '',
-        message: ''
+        message: '',
+        website: ''
       })
 
       // Hide success message after 5 seconds
@@ -233,6 +235,20 @@ export default function Contact() {
                 disabled={status === 'loading'}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition resize-none disabled:bg-gray-100"
                 placeholder="Tell me about your inquiry..."
+              />
+            </div>
+
+            {/* Honeypot field - hidden from humans, bots will fill it */}
+            <div style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+              <label htmlFor="website">Website (leave blank)</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
               />
             </div>
 
