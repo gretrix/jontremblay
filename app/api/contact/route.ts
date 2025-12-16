@@ -10,7 +10,43 @@ const contactSchema = z.object({
   company: z.string().optional(),
   inquiryPurpose: z.enum(['business', 'partnership', 'speaking', 'church-community', 'personal', 'other']),
   message: z.string().min(10, 'Message must be at least 10 characters'),
+  recaptchaToken: z.string().min(1, 'reCAPTCHA token is required'),
 })
+
+async function verifyRecaptcha(token: string): Promise<boolean> {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY
+  
+  if (!secretKey) {
+    console.error('❌ RECAPTCHA_SECRET_KEY not configured')
+    return false
+  }
+
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `secret=${secretKey}&response=${token}`,
+    })
+
+    const data = await response.json()
+    
+    console.log('🔒 reCAPTCHA verification:', {
+      success: data.success,
+      score: data.score,
+      action: data.action,
+    })
+
+    // reCAPTCHA v3 returns a score from 0.0 to 1.0
+    // 0.0 is very likely a bot, 1.0 is very likely a human
+    // We'll use 0.5 as the threshold
+    return data.success && data.score >= 0.5
+  } catch (error) {
+    console.error('❌ reCAPTCHA verification error:', error)
+    return false
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,8 +55,19 @@ export async function POST(request: NextRequest) {
     // Validate the request body
     const validatedData = contactSchema.parse(body)
 
+    // Verify reCAPTCHA token
+    const isHuman = await verifyRecaptcha(validatedData.recaptchaToken)
+    
+    if (!isHuman) {
+      console.log('🤖 BOT DETECTED - Form submission blocked')
+      return NextResponse.json(
+        { error: 'Bot detection failed. Please try again.' },
+        { status: 403 }
+      )
+    }
+
     // Log to console for monitoring
-    console.log('📧 FORM SUBMISSION RECEIVED:')
+    console.log('📧 FORM SUBMISSION RECEIVED (✅ Human verified):')
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('Name:', validatedData.name)
     console.log('Email:', validatedData.email)
@@ -30,15 +77,16 @@ export async function POST(request: NextRequest) {
     console.log('Message:', validatedData.message)
     console.log('Time:', new Date().toLocaleString())
 
-    // Save to database
+    // Save to database (exclude recaptchaToken)
+    const { recaptchaToken, ...dataToSave } = validatedData
     const submission = await prisma.contactSubmission.create({
       data: {
-        name: validatedData.name,
-        email: validatedData.email,
-        phone: validatedData.phone || null,
-        company: validatedData.company || null,
-        inquiryPurpose: validatedData.inquiryPurpose,
-        message: validatedData.message,
+        name: dataToSave.name,
+        email: dataToSave.email,
+        phone: dataToSave.phone || null,
+        company: dataToSave.company || null,
+        inquiryPurpose: dataToSave.inquiryPurpose,
+        message: dataToSave.message,
       },
     })
 
@@ -46,8 +94,8 @@ export async function POST(request: NextRequest) {
 
     // Send auto-response email to the submitter
     try {
-      await sendAutoResponseEmail(validatedData)
-      console.log('✅ Auto-response email sent to:', validatedData.email)
+      await sendAutoResponseEmail(dataToSave)
+      console.log('✅ Auto-response email sent to:', dataToSave.email)
     } catch (emailError) {
       console.error('⚠️  Failed to send auto-response email:', emailError)
       // Continue even if email fails - we still saved to DB
@@ -55,7 +103,7 @@ export async function POST(request: NextRequest) {
 
     // Send notification email to admin
     try {
-      await sendAdminNotificationEmail(validatedData)
+      await sendAdminNotificationEmail(dataToSave)
       console.log('✅ Admin notification email sent to:', process.env.ADMIN_EMAIL)
     } catch (emailError) {
       console.error('⚠️  Failed to send admin notification email:', emailError)

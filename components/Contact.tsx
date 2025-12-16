@@ -2,6 +2,16 @@
 
 import { useState, FormEvent } from 'react'
 
+// Declare grecaptcha for TypeScript
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
+    }
+  }
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,12 +30,29 @@ export default function Contact() {
     setErrorMessage('')
 
     try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await new Promise<string>((resolve, reject) => {
+        if (typeof window !== 'undefined' && window.grecaptcha) {
+          window.grecaptcha.ready(() => {
+            window.grecaptcha
+              .execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!, { action: 'contact_form' })
+              .then(resolve)
+              .catch(reject)
+          })
+        } else {
+          reject(new Error('reCAPTCHA not loaded'))
+        }
+      })
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken,
+        }),
       })
 
       const data = await response.json()
