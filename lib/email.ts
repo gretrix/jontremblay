@@ -80,10 +80,13 @@ export async function sendAdminNotificationEmail(formData: ContactFormData) {
     other: 'Other',
   }
 
+  // Get site name from environment variable or use domain
+  const siteName = process.env.SITE_NAME || 'JonathanTremblay.com'
+
   const mailOptions = {
     from: process.env.EMAIL_FROM,
     to: process.env.ADMIN_EMAIL,
-    subject: `New Contact Form Submission - ${formData.name}`,
+    subject: `[${siteName}] New Contact Form - ${formData.name}`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -103,6 +106,9 @@ export async function sendAdminNotificationEmail(formData: ContactFormData) {
         <div class="container">
           <div class="header">
             <h2>🔔 New Contact Form Submission</h2>
+            <p style="margin: 10px 0 0 0; font-size: 18px; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px;">
+              📍 From: <strong>${siteName}</strong>
+            </p>
           </div>
           <div class="content">
             <div class="field">
